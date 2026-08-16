@@ -1,191 +1,251 @@
 <div align="center">
 
-# OrchestraAI
-### Build AI Agents. Not AI Infrastructure.
+# 🎼 OrchestraAI
+### **Build AI Agents. Not AI Infrastructure.**
 
-*A cloud-native AI Agent Runtime Platform that abstracts memory, knowledge, reasoning, tools, execution, and model orchestration behind a unified developer API.*
+*A Cloud-Native Backend-as-a-Service (BaaS) architectural concept for AI Agents that abstracts memory, knowledge graphs, preemptive rate-limit routing, and multi-provider key pooling behind a single unified API.*
 
 ---
 
-![Version](https://img.shields.io/badge/version-v1.0-blue)
-![Status](https://img.shields.io/badge/status-Development-orange)
-![License](https://img.shields.io/badge/license-Apache%202.0-green)
-![Python](https://img.shields.io/badge/Python-3.13+-3776AB?logo=python)
-![Platform](https://img.shields.io/badge/platform-Cloud_Runtime-black)
+[![Architecture](https://img.shields.io/badge/Architecture-Cloud--Native%20BaaS-blue?style=flat)](https://github.com/)
+[![Rate Limiting](https://img.shields.io/badge/Zero--429-Preemptive%20Routing-red?style=flat&logo=redis&logoColor=white)](https://redis.io/)
+[![Knowledge Engine](https://img.shields.io/badge/Knowledge-Hybrid%20Graph%20%2B%20Vector-purple?style=flat)](https://github.com/)
+[![Planned Stack](https://img.shields.io/badge/Planned%20Stack-Python%203.13+%20%7C%20FastAPI-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green?style=flat)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Concept%20%26%20Active%20Design-orange?style=flat)]()
 
 </div>
 
 ---
 
-# ✨ Vision
-
-While modern AI APIs expose powerful language models, developers are still burdened with building all the surrounding infrastructure. Developing a production-ready AI application typically requires custom implementations for memory, session management, information retrieval, and planning. Furthermore, developers must manage prompt construction, context limits, knowledge processing, tool orchestration, code execution, and model routing.
-
-OrchestraAI aims to eliminate this complexity entirely. Instead of wasting time building backend AI infrastructure, developers should be able to focus purely on building their core applications. OrchestraAI acts as the intelligent runtime that powers every AI interaction seamlessly in the background.
+> [!NOTE]
+> **Project Status:** OrchestraAI is currently an **architectural concept and design specification** under active research and planning. The architecture, workflow diagrams, and API design documented in this repository represent the planned implementation.
 
 ---
 
-# 💡 The Problem
+## 🌟 Overview
 
-In today's AI ecosystem, the gap between a simple LLM API call and a production-grade agent is vast. Developers spend weeks or months integrating memory systems, vector databases, and Retrieval-Augmented Generation (RAG) pipelines. They find themselves repeatedly solving the same problems: engineering prompts, managing tool calling, implementing session storage, and figuring out multi-model support. Adding advanced capabilities like autonomous planning, reflection, and context compression only multiplies the development time. As a result, the majority of effort is spent reinventing the wheel rather than innovating on the product.
+Building production-ready AI agents today is notoriously difficult. Developers spend weeks setting up and maintaining tedious backend infrastructure: vector databases, session caches, token limiters, prompt templates, RAG pipelines, and brittle key rotation scripts.
+
+**OrchestraAI aims to eliminate AI backend complexity.** 
+
+The goal is to provide a managed, cloud-native runtime where developers simply configure their agents, bring their own API keys (BYOK), and interact through a single, elegant API endpoint. OrchestraAI will handle everything else in the background—from hierarchical user/session memory to hybrid knowledge graphs and zero-downtime model routing.
+
+> **The Philosophy:** Developers shouldn't build AI infrastructure. Applications should simply request intelligence, and the runtime handles the rest.
 
 ---
 
-# 🚀 Our Approach
+## ⚡ Why OrchestraAI?
 
-OrchestraAI introduces a unified architecture where your applications communicate with just a single API. All underlying complexities are managed automatically by the runtime.
+| Feature | The Traditional Agent Headache 😫 | The OrchestraAI Way |
+| :--- | :--- | :--- |
+| **Setup & Hosting** | Managing Vector DBs, Redis, worker queues, and custom servers. | **Zero Infrastructure.** Plug-and-play Cloud BaaS API. |
+| **API Keys & Quotas** | Manually rotating keys and crashing on `429 Rate Limit` errors. | **Preemptive Zero-429 Engine.** Redis-tracked predictive key swapping. |
+| **Memory & State** | Manually engineering session DBs, sliding windows, and context limits. | **Isolated User & Session Memory.** Built-in cross-session deep recall. |
+| **Knowledge Retrieval** | Basic chunk-and-embed RAG with lost relationships and high latency. | **Hybrid Graph + Vector Fallback.** Asynchronous AI entity extraction. |
+| **Model Selection** | Hardcoded provider logic and complex retry/fallback routines. | **Dynamic Priority Routing.** Route by `easy`, `medium`, `high`, or `extended`. |
+| **Tools & Execution** | Writing complex schema bindings and dynamic webhook listeners. | **Curated Built-in Tools.** Safe, zero-config memory & execution tools. |
+
+---
+
+## 🏗 Core Architecture
+
+OrchestraAI is planned around two streamlined layers: the **Developer Control Plane** and the **Live Request Data Plane**.
+
+### 1. Developer Setup & Knowledge Ingestion (Control Plane)
 
 ```mermaid
-graph TD
-    A[Your Application] -->|Unified API Request| B(OrchestraAI Runtime)
-    B --> C[Memory & Knowledge]
-    B --> D[Tools & Execution]
-    B --> E[Planning & Routing]
-    C --> F((LLMs))
-    D --> F
-    E --> F
+flowchart TD
+    Dev([Developer]) -->|1. Sign Up & Configure| UI[Web Dashboard]
     
-    style A fill:#4CAF50,stroke:#388E3C,stroke-width:2px,color:#fff
-    style B fill:#2196F3,stroke:#1976D2,stroke-width:2px,color:#fff
-    style F fill:#9C27B0,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    UI -->|Add API Keys| Vault[(BYOK Key Vault<br/>Multi-Provider & Multi-Key Pool)]
+    UI -->|Upload Knowledge Files| Parser[Document Text Parser<br/>PDF, DOCX, TXT, MD]
+    
+    Parser -->|Raw Text Stream| Worker[Async AI Background Worker]
+    Worker -->|Extract Entity Relations| KG[(Knowledge Graph Engine)]
+    Worker -->|Generate Fast Cloud Embeddings| VDB[(Vector RAG Index)]
+    
+    UI -->|2. Generate Credentials| APIKey([OrchestraAI Agent API Key])
+
+    style Dev fill:#238636,stroke:#2ea043,color:#fff
+    style UI fill:#1f6feb,stroke:#388bfd,color:#fff
+    style Vault fill:#d29922,stroke:#e3b341,color:#fff
+    style Parser fill:#161b22,stroke:#30363d,color:#fff
+    style Worker fill:#8957e5,stroke:#a371f7,color:#fff
+    style KG fill:#ab7df8,stroke:#c297ff,color:#fff
+    style VDB fill:#ab7df8,stroke:#c297ff,color:#fff
+    style APIKey fill:#238636,stroke:#2ea043,color:#fff
 ```
 
 ---
 
-# 🧠 What Makes OrchestraAI Different
-
-OrchestraAI is **not** another chatbot, LLM wrapper, simple RAG demo, or prompt library. 
-
-Instead, it is a comprehensive **AI Runtime and Agent Infrastructure**. It serves as a unified knowledge platform, an execution engine, and a complete developer platform designed for scale.
-
----
-
-# 🏗 Core Architecture
-
-OrchestraAI provides a robust, multi-layered architecture to manage every aspect of the agent lifecycle.
+### 2. Live Request Execution Pipeline (Data Plane)
 
 ```mermaid
-graph TD
-    Dev[Developer] --> UI[Web Dashboard / API]
-    UI --> AM[Agent Management]
-    AM --> AR[Agent Runtime]
+flowchart TD
+    Client[Client App<br/><code>POST /v1/agents/chat</code><br/><i>agent_id, user_id, session_id, priority, stream, prompt</i>]
     
-    subgraph Agent Runtime Environment
-        Mem[Memory & Sessions]
-        Know[Knowledge Pipeline]
-        Tool[Tool Runtime & Execution]
+    subgraph Runtime [OrchestraAI Cloud Runtime]
+        GW[API Gateway & Auth Guard<br/>Python 3.13+ / AsyncIO / FastAPI]
+        
+        subgraph StateLayer [State & Intelligence Engines]
+            Mem[Hierarchical Memory<br/>• Isolated user_id partitions<br/>• Multi session_id history<br/>• get_behavior cross-session recall]
+            Know[Hybrid Knowledge Engine<br/>• Primary: Knowledge Graph<br/>• Fallback: Cloud Vector RAG]
+            Tools[Curated Built-in Tools<br/>• Memory Inspector, Math, Search]
+        end
+        
+        PB[Context & Prompt Assembly Engine]
+        
+        subgraph RoutingLayer [Preemptive Zero-429 & Priority Router]
+            Router{Intelligent Model Router}
+            Redis[(Redis Metrics Tracker<br/>• Tokens/sec sliding window<br/>• Requests/min rate limits<br/>• Daily token quotas<br/>➔ Proactive swap before 429)]
+        end
+        
+        subgraph KeyPools [Active BYOK Provider Key Pools]
+            OpenAI[OpenAI Key Pool<br/>Key 1, Key 2, Key 3]
+            Claude[Claude Key Pool<br/>Key A, Key B]
+            Gemini[Gemini Key Pool<br/>Key 1, Key 2]
+            Groq[Groq / Ollama Pool<br/>Local & Fast Inference]
+        end
+        
+        Engine[SSE Streaming / JSON Response Engine]
     end
+
+    Client -->|Unified API Request| GW
+    GW --> Mem
+    GW --> Know
+    GW --> Tools
     
-    AR --> Mem
-    AR --> Know
-    AR --> Tool
-    
-    Know --> KG[Knowledge Graph & Vector Search]
-    Tool --> EE[Execution Engine]
-    
-    KG --> PB[Prompt Builder]
-    EE --> PB
     Mem --> PB
+    Know --> PB
+    Tools --> PB
     
-    PB --> IR{Intelligent Router}
-    IR --> OpenAI[OpenAI]
-    IR --> Claude[Claude]
-    IR --> Gemini[Gemini]
-    IR --> Groq[Groq / Local]
+    PB --> Router
+    Router <--> Redis
     
-    style Dev fill:#FFC107,stroke:#FFA000,stroke-width:2px,color:#000
-    style AR fill:#2196F3,stroke:#1976D2,stroke-width:2px,color:#fff
-    style IR fill:#F44336,stroke:#D32F2F,stroke-width:2px,color:#fff
+    Router -->|Match Priority & Healthy Key| OpenAI
+    Router -->|Match Priority & Healthy Key| Claude
+    Router -->|Match Priority & Healthy Key| Gemini
+    Router -->|Match Priority & Healthy Key| Groq
+    
+    OpenAI --> Engine
+    Claude --> Engine
+    Gemini --> Engine
+    Groq --> Engine
+    
+    Engine -->|Real-Time SSE Stream / JSON| Client
+
+    style Client fill:#238636,stroke:#2ea043,color:#fff
+    style GW fill:#1f6feb,stroke:#388bfd,color:#fff
+    style Mem fill:#d29922,stroke:#e3b341,color:#fff
+    style Know fill:#8957e5,stroke:#a371f7,color:#fff
+    style Tools fill:#a371f7,stroke:#bc8cff,color:#fff
+    style PB fill:#db61a2,stroke:#f778ba,color:#fff
+    style Router fill:#da3633,stroke:#f85149,color:#fff
+    style Redis fill:#b62324,stroke:#da3633,color:#fff
+    style Engine fill:#1f6feb,stroke:#388bfd,color:#fff
+    style Runtime fill:#0d1117,stroke:#30363d,stroke-width:2px
 ```
 
 ---
 
-# 🌍 Multi Provider Support
+## ✨ Key Planned Superpowers
 
-OrchestraAI offers seamless integration with multiple AI providers within a single workspace, including **OpenAI** (GPT-4o, GPT-4o-mini), **Anthropic** (Claude 3.5 Sonnet), **Google** (Gemini 1.5 Pro/Flash), **Groq** (Llama 3), and **Ollama** for local inference.
+### 1. ⚡ Preemptive Zero-429 Engine (BYOK Key Pooling)
+Designed to eliminate API rate-limit bottlenecks:
+* **Bring Your Own Keys (BYOK):** Pool single or multiple keys across providers (OpenAI, Anthropic, Google Gemini, Groq, Ollama).
+* **Predictive Redis Tracker:** Continuously log and estimate requests per second, tokens per minute, and daily quota consumption.
+* **Proactive Failover:** Swaps to another key or provider *before* a 429 Rate Limit error occurs. Zero delay, zero dropped calls.
 
-The runtime handles all provider-specific quirks automatically. It intelligently selects the best models for the task, rotates API keys securely, automatically retries failed requests, balances workloads, and optimizes costs—all without any changes to your application code.
+### 2. 🎯 Dynamic Priority Tiers
+Route requests based on intelligence depth and latency requirements without changing client code:
+* `easy` — Ultra-fast, lightweight queries (e.g., summaries, classifications).
+* `medium` — Standard conversational interactions and quick lookups.
+* `high` — Complex reasoning, multi-step tool execution, and synthesis.
+* `extended` — Deep analytical processing, large context analysis, and maximum reasoning depth.
 
----
+### 3. 🧠 Hierarchical Memory & Cross-Session Recall
+* **Strict User Isolation:** Each `user_id` is completely partitioned for privacy and security.
+* **Multi-Session Lifecycle:** A user can initiate infinite distinct `session_id` threads.
+* **Deep Context Inspection (`get_behavior`):** Built-in internal tools to allow the agent to cross-examine historical user sessions when deep personalization, user profile data, or past context is required.
 
-# 📚 Knowledge Processing Pipeline
+### 4. 🕸️ Hybrid Knowledge Engine (Graph + Vector Fallback)
+* **Universal Text Ingestion:** Parse PDF, DOCX, Markdown, or raw text documentation.
+* **Asynchronous AI Entity Extraction:** Background AI workers parse documents and establish interconnected relationship graphs.
+* **Ultra-Fast Cloud Embeddings:** Graph retrieval provides deep relational context, with cloud vector RAG serving as a high-precision fallback.
 
-Uploading documents should never require developers to build and maintain a custom RAG pipeline. OrchestraAI supports a wide array of formats including **PDF, DOCX, Markdown, TXT, Websites, and API Documentation**.
-
-Once a document is uploaded, the platform automates the entire ingestion process. It handles text extraction, optimal chunking, and embedding generation. It then performs entity detection to build a robust knowledge graph alongside a standard vector index. When queries are made, it uses hybrid retrieval to fetch the most relevant context and automatically optimizes the prompt before generating the final AI response.
-
----
-
-# 🤖 Agent Isolation
-
-Each developer or organization can host multiple, independent AI agents (e.g., a Support Agent, an HR Agent, a Coding Agent). 
-
-Every single agent is strictly isolated. Each one securely owns its dedicated memory, session history, knowledge base, vector index, knowledge graph, API keys, tools, and execution policies. There is absolutely no shared state or cross-contamination between agents.
-
----
-
-# 🔧 Developer Tools & Execution
-
-Instead of dealing with raw database connections, developers expose specific operations as tools (e.g., *Search Orders*, *Create Invoice*, *Read CRM*, or *Internal APIs*). The runtime intelligently decides exactly when and how to invoke these operations.
-
-### ⚡ Execution Runtime
-The platform determines the safest and most efficient environment for work to execute. Whether it requires Cloud Python execution, a secured Cloud Terminal, a headless Browser, local runtime, or interacting with an external service, OrchestraAI routes it appropriately. In this paradigm, **the model focuses strictly on reasoning, while the runtime focuses entirely on execution.**
+### 5. 🌊 Dual-Mode Output Delivery
+* **Real-time SSE Streaming (`stream: true`):** Word-by-word streaming for instant UI typing feedback.
+* **Structured JSON (`stream: false`):** Complete structured payloads for server-to-server workflows.
 
 ---
 
-# 🎯 Goals & Planned Components
+## 💻 Target Developer Experience (Proposed API)
 
-**Core Objectives:**
-* Make AI development infrastructure-free and standardize production AI agents.
-* Simplify enterprise AI adoption and reduce development complexity.
-* Improve scalability and build reusable intelligent runtimes.
+Under the planned architecture, integrating an intelligent, memory-aware agent will take just a single API call:
 
-**Key Components:**
-The platform consists of several micro-services including an Agent Runtime, API Gateway, Knowledge/Memory Services, Tool Runtime, Model Router, Execution Engine, Planner, Reflection Engine, Knowledge Graph, and a Developer SDK.
+### Request (Example)
+```bash
+curl -X POST https://api.orchestra-ai.cloud/v1/agents/chat \
+  -H "Authorization: Bearer ORCHESTRA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": "ag_dev_98234",
+    "user_id": "usr_8820",
+    "session_id": "sess_4019",
+    "prompt": "Can you summarize the project milestones we discussed last Tuesday?",
+    "priority": "high",
+    "stream": true
+  }'
+```
+
+### Python Integration (Example)
+```python
+import requests
+
+url = "https://api.orchestra-ai.cloud/v1/agents/chat"
+headers = {
+    "Authorization": "Bearer YOUR_ORCHESTRA_API_KEY",
+    "Content-Type": "application/json"
+}
+
+payload = {
+    "agent_id": "ag_support_v1",
+    "user_id": "customer_42",
+    "session_id": "chat_session_99",
+    "prompt": "What are the return policy terms for international orders?",
+    "priority": "medium",
+    "stream": False
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json()["response"])
+```
 
 ---
 
-# 🛣 Roadmap
+## 🛠 Planned Tech Stack
 
-| Phase | Planned Features |
-| :--- | :--- |
-| **v1 (Current)** | Agent Management, Session Management, Knowledge Upload, Vector Search, Multi-Model APIs, REST API. |
-| **v2** | Knowledge Graph, Hybrid Retrieval, Tool Runtime, Model Routing, Memory Engine. |
-| **v3** | Autonomous Planner, Reflection capabilities, Distributed Execution, Complex Autonomous Workflows. |
+The conceptual architecture is designed around high-concurrency, low-latency Python technologies:
 
----
-
-# 🔥 Long Term Vision
-
-We believe AI applications should not manage prompts, memory, retrieval, execution, or orchestration—just as modern applications do not manually manage CPU allocation, memory addressing, or networking inside an operating system. 
-
-Instead, **applications should simply request intelligence, and the runtime handles everything else.**
+* **Core Runtime:** Python 3.13+ / AsyncIO / FastAPI
+* **Real-Time State & Rate-Limiting:** Redis (sliding-window token metrics & key pooling)
+* **Persistent Storage:** Relational database for accounts, agents, sessions, and chat archives
+* **Knowledge Layer:** Hybrid Entity Graph + Cloud Vector Indexing
+* **Worker Pipeline:** Asynchronous background AI task engine for document parsing and entity classification
 
 ---
 
-# 📖 Philosophy
+## 📄 License
 
-> Developers shouldn't build AI infrastructure.  
-> They should build applications.
-
----
-
-# ⚠ Current Status
-
-This repository contains the **initial architecture and vision (v1.0)** of OrchestraAI. The project is currently under active research and development. Features described in this document represent the long-term roadmap and may be introduced incrementally.
-
----
-
-# 🤝 Contributing
-
-Contributions, architectural discussions, design reviews, and ideas are welcome.
+OrchestraAI is open-sourced under the [Apache 2.0 License](LICENSE).
 
 <br>
 
 <div align="center">
 
-### Building the future runtime for intelligent software.
+**OrchestraAI — Architectural Concept for the Future of Intelligent Software.**
 
-⭐ Star the repository if you'd like to follow the journey.
+⭐ **Star this repository** to follow the concept and design journey!
 
 </div>
