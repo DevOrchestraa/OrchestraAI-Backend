@@ -153,7 +153,7 @@ flowchart TD
 
 ### 1. ⚡ Preemptive Zero-429 Engine (BYOK Key Pooling)
 Designed to eliminate API rate-limit bottlenecks:
-* **Bring Your Own Keys (BYOK):** Pool single or multiple keys across providers (OpenAI, Anthropic, Google Gemini, Groq, Ollama).
+* **Bring Your Own Keys (BYOK):** Pool single or multiple keys across providers (OpenAI, Anthropic, Google Gemini, Groq, Ollama). In this case developers who use the service Add keys from diff providers to OrchestraAI. This will help in reducing the cost and increasing the speed of the application.  
 * **Predictive Redis Tracker:** Continuously log and estimate requests per second, tokens per minute, and daily quota consumption.
 * **Proactive Failover:** Swaps to another key or provider *before* a 429 Rate Limit error occurs. Zero delay, zero dropped calls.
 
@@ -172,7 +172,7 @@ Route requests based on intelligence depth and latency requirements without chan
 ### 4. 🕸️ Hybrid Knowledge Engine (Graph + Vector Fallback)
 * **Universal Text Ingestion:** Parse PDF, DOCX, Markdown, or raw text documentation.
 * **Asynchronous AI Entity Extraction:** Background AI workers parse documents and establish interconnected relationship graphs.
-* **Ultra-Fast Cloud Embeddings:** Graph retrieval provides deep relational context, with cloud vector RAG serving as a high-precision fallback.
+* **Fast Cloud Embeddings:** Graph retrieval provides deep relational context, with cloud vector RAG serving as a high-precision fallback.
 
 ### 5. 🌊 Dual-Mode Output Delivery
 * **Real-time SSE Streaming (`stream: true`):** Word-by-word streaming for instant UI typing feedback.
@@ -233,6 +233,51 @@ The conceptual architecture is designed around high-concurrency, low-latency Pyt
 * **Persistent Storage:** Relational database for accounts, agents, sessions, and chat archives
 * **Knowledge Layer:** Hybrid Entity Graph + Cloud Vector Indexing
 * **Worker Pipeline:** Asynchronous background AI task engine for document parsing and entity classification
+
+---
+
+## 💡 When Should You Use OrchestraAI?
+
+Building production AI capabilities into your application typically forces you into an architectural dilemma:
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        BUILDING FROM SCRATCH (THE INFRASTRUCTURE MAZE)                 │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│  ❌ Set up & host Vector Databases (pgvector / Qdrant)                                  │
+│  ❌ Build text extractors, chunkers & knowledge graph pipelines                        │
+│  ❌ Design database schemas for user isolation & session histories                     │
+│  ❌ Write Redis counters for rate-limit estimation across multiple API keys            │
+│  ❌ Engineer fallback logic for 429 errors & multi-provider routing                    │
+│  ❌ Build background task workers & real-time SSE streaming servers                   │
+│                                                                                        │
+│  ⏳ Total Effort: Weeks to months of boilerplate devops & maintenance                  │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+                                            VS
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                             THE ORCHESTRAAI SOLUTION                                   │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│  ✅ Bring your API keys to the OrchestraAI dashboard                                   │
+│  ✅ Upload your knowledge docs & set agent instructions                                │
+│  ✅ Call one unified endpoint: POST /v1/agents/chat                                    │
+│                                                                                        │
+│  ♨️ Total Effort: Minutes. OrchestraAI manages the entire AI runtime in the cloud.    │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Ideal Scenarios:
+
+* **When building AI-powered apps (SaaS, Mobile, Web, or Internal Tools):**  
+  You want rich AI features (isolated user memory, persistent sessions, document search, and real-time streaming) without writing and maintaining custom backend AI plumbing.
+
+* **When you want maximum uptime & zero 429 rate-limit crashes:**  
+  Instead of hardcoding single API keys and writing complex fallback logic, you pool multiple keys across providers (OpenAI, Claude, Gemini, Groq) and let OrchestraAI proactively balance and route requests.
+
+* **When your application needs deep, relational document intelligence:**  
+  Instead of basic keyword/chunk RAG that loses relationships between documents, you want an automatic, background-built Knowledge Graph with vector fallback managed entirely for you.
+
+* **When you want to skip implementing AI memory, context, tool management, and token optimization:**  
+  Designing sliding-window session stores, long-term memory retrieval, tool execution layers, and token compression from scratch is tedious and error-prone. OrchestraAI manages the entire state lifecycle, tool calling, and token budget optimization automatically behind the scenes.
 
 ---
 
