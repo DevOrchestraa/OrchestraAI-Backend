@@ -1,8 +1,10 @@
-from app.providers.groq import generate_response
+from app.providers.gemini import generate_response as gemini_generate_response
+from app.providers.groq import generate_response as groq_generate_response
 
 
 SUPPORTED_PROVIDERS = {
-    "groq": generate_response,
+    "gemini": gemini_generate_response,
+    "groq": groq_generate_response,
 }
 
 

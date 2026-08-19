@@ -1,11 +1,11 @@
-from groq import Groq
+from groq import AsyncGroq
 from app.providers.exceptions import ProviderError
 
-def generate_response(api_key: str, prompt: str, model: str, max_tokens: int) -> dict : 
+async def generate_response(api_key: str, prompt: str, model: str, max_tokens: int) -> dict:
 
-    client = Groq(api_key = api_key)
+    client = AsyncGroq(api_key = api_key)
     try:
-        response = client.chat.completions.create(
+        response = await client.chat.completions.create(
             model = model,
             messages = [
                 {"role": "user",
